@@ -1,0 +1,5 @@
+# TK Mybatis Mapper
+mapper:
+  mappers: com.meamei.baseDao.mapper.Mapper
+  not-empty: false
+  identity: MYSQL
