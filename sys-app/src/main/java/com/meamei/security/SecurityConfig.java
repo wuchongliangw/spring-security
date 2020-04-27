@@ -1,5 +1,6 @@
 package com.meamei.security;
 
+import com.meamei.filter.JwtAuthenticationTokenFilter;
 import com.meamei.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author mm013
@@ -54,7 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/register").permitAll()
-                .antMatchers("/user/getInfo").permitAll()
                 .anyRequest()
                 .authenticated();
                 /*.and()
@@ -62,11 +63,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(authenticationEntryPoint);*/
         // 禁用缓存
         http.headers().cacheControl();
-        /*http.formLogin()
+        // 添加JWT filter
+        http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.formLogin()
                 .loginProcessingUrl("/user/login")
                 .permitAll()
-            //    .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler);*/
+               // .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler);
         //添加自定义未授权和未登录结果返回
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint);
@@ -81,5 +84,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(){
+        return new JwtAuthenticationTokenFilter();
     }
 }

@@ -23,7 +23,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().write(JSON.toJSONString(RestResponse.success("登录成功")));
         response.getWriter().flush();
+        response.getWriter().write(JSON.toJSONString(RestResponse.success("登录成功")));
     }
 }
