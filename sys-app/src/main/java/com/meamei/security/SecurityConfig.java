@@ -26,13 +26,13 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private RestfulAccessDeniedHandler accessDeniedHandler;
-
-    @Autowired
     private RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,9 +53,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/login").permitAll()
-               // .antMatchers("/user/register").hasAuthority("admin")
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/getInfo").permitAll()
                 .anyRequest()
-                .authenticated().and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .authenticated();
+                /*.and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint);*/
+        // 禁用缓存
+        http.headers().cacheControl();
+        /*http.formLogin()
+                .loginProcessingUrl("/user/login")
+                .permitAll()
+            //    .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler);*/
+        //添加自定义未授权和未登录结果返回
+        http.exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint);
     }
 
     @Override

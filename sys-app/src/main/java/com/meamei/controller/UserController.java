@@ -3,6 +3,7 @@ package com.meamei.controller;
 import com.meamei.baseConfig.RestResponse;
 import com.meamei.baseEntity.model.User;
 import com.meamei.baseService.service.UserService;
+import com.meamei.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,9 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.meamei.controller.BaseController.SUCCESS_MESSAGE;
+
 
 /**
  * @author mm013
@@ -20,7 +24,7 @@ import static com.meamei.controller.BaseController.SUCCESS_MESSAGE;
  * @description:
  */
 @RestController
-public class UserController extends BaseController{
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -30,6 +34,9 @@ public class UserController extends BaseController{
 
     @Autowired
     private AuthenticationManager author;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * 注册
@@ -54,11 +61,25 @@ public class UserController extends BaseController{
      * @param password 密码
      * @return
      */
-    @GetMapping("/user/login")
+    @PostMapping("/user/login")
     public RestResponse login(String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authenticate = author.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        return RestResponse.success(SUCCESS_MESSAGE);
+        String token = jwtTokenUtil.generateToken(username);
+        return RestResponse.success(token);
     }
+
+    /**
+     * 获取用户信息
+     *
+     * @param userId 用户id
+     * @return
+     */
+    @GetMapping("/user/getInfo")
+    public RestResponse getInfo(@RequestParam Long userId) {
+        User user = userService.find(userId);
+        return RestResponse.success(user);
+    }
+
 }
