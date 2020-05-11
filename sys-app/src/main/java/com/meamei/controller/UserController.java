@@ -3,7 +3,9 @@ package com.meamei.controller;
 import com.meamei.baseConfig.RestResponse;
 import com.meamei.baseEntity.model.User;
 import com.meamei.baseService.service.UserService;
+import com.meamei.model.UserDetailImpl;
 import com.meamei.util.JwtTokenUtil;
+import com.meamei.util.SmsCodeAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,6 +73,22 @@ public class UserController {
     }
 
     /**
+     * 短信验证码登录
+     *
+     * @param telephone 用户名
+     * @param password 密码
+     * @return
+     */
+    @PostMapping("/user/sms/login")
+    public RestResponse smsLogin(String telephone, String password) {
+        SmsCodeAuthenticationToken authenticationToken = new SmsCodeAuthenticationToken(telephone);
+        Authentication authenticate = author.authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        String token = jwtTokenUtil.generateToken(telephone);
+        return RestResponse.success(token);
+    }
+
+    /**
      * 获取用户信息
      *
      * @param userId 用户id
@@ -79,6 +97,10 @@ public class UserController {
     @GetMapping("/user/getInfo")
     public RestResponse getInfo(@RequestParam Long userId) {
         User user = userService.find(userId);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailImpl users = (UserDetailImpl) authentication.getPrincipal();
+        String account = users.getUsername();
         return RestResponse.success(user);
     }
 
