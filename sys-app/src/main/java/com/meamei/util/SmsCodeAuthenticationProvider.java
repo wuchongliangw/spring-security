@@ -6,7 +6,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * @author mm013
@@ -33,7 +32,9 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
             throw new InternalAuthenticationServiceException("无法获取用户信息");
         }
         SmsCodeAuthenticationToken authenticationResult = new SmsCodeAuthenticationToken(userDetails, userDetails.getAuthorities());
+
         authenticationResult.setDetails(authenticationToken.getDetails());
+
         return authenticationResult;
     }
 

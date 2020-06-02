@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/sms/login").permitAll()
                 .antMatchers("/user/register").permitAll()
+                .antMatchers("/authentication/telephone").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -73,9 +74,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                // .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler);*/
         //添加自定义未授权和未登录结果返回
-        http.exceptionHandling()
+        // http.exceptionHandling()
               //  .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint);
+              //  .authenticationEntryPoint(authenticationEntryPoint);
     }
 
     @Override

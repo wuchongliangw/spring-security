@@ -1,9 +1,7 @@
 package com.meamei.util;
 
 import com.meamei.baseEntity.model.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -109,5 +107,29 @@ public class JwtTokenUtil {
     private Date getExpiredDateFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         return claims.getExpiration();
+    }
+
+
+    public boolean validateToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey("mysecret").parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException e) {
+            LOGGER.info("Invalid JWT signature.");
+            LOGGER.trace("Invalid JWT signature trace: {}", e);
+        } catch (MalformedJwtException e) {
+            LOGGER.info("Invalid JWT token.");
+            LOGGER.trace("Invalid JWT token trace: {}", e);
+        } catch (ExpiredJwtException e) {
+            LOGGER.info("Expired JWT token.");
+            LOGGER.trace("Expired JWT token trace: {}", e);
+        } catch (UnsupportedJwtException e) {
+            LOGGER.info("Unsupported JWT token.");
+            LOGGER.trace("Unsupported JWT token trace: {}", e);
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("JWT token compact of handler are invalid.");
+            LOGGER.trace("JWT token compact of handler are invalid trace: {}", e);
+        }
+        return false;
     }
 }

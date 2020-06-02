@@ -76,11 +76,10 @@ public class UserController {
      * 短信验证码登录
      *
      * @param telephone 用户名
-     * @param password 密码
      * @return
      */
     @PostMapping("/user/sms/login")
-    public RestResponse smsLogin(String telephone, String password) {
+    public RestResponse smsLogin(String telephone) {
         SmsCodeAuthenticationToken authenticationToken = new SmsCodeAuthenticationToken(telephone);
         Authentication authenticate = author.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
