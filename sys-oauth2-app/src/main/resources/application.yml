@@ -1,0 +1,44 @@
+spring:
+  profiles:
+    active: dev
+  # 数据库配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      name: master
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      query-timeout: 10
+      transaction-query-timeout: 20
+      kill-when-socket-read-timeout: true
+      test-while-idle: true
+      druid.initial-size: 1
+      max-active: 20
+      min-idle: 1
+      max-wait: 60000
+      validation-query: SELECT 'x'
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      filters: stat
+      filter.stat.log-slow-sql: false
+      filter.stat.slow-sql-millis: 2000
+      # Druid StatViewServlet配置，说明请参考Druid Wiki，配置_StatViewServlet配置
+      stat-view-servlet.enabled: true
+      stat-view-servlet.url-pattern: /druid/*
+      stat-view-servlet.reset-enable: true
+      stat-view-servlet.login-username: admin
+      stat-view-servlet.login-password: admin
+
+# mybatis
+mybatis:
+  config-location: classpath*:mybatis-config.xml
+  # actable
+  table.auto: update
+  model.pack: com.meamei.baseEntity.model
+  database.type: mysql
+# TK mybatis
+mapper:
+  mappers: com.meamei.baseDao.mapper.Mapper
+  not-empty: false
+  identity: MYSQL

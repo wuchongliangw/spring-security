@@ -11,6 +11,7 @@
         <module>sys-app</module>
         <module>base-vo</module>
         <module>base-utils</module>
+        <module>sys-oauth2-app</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -62,6 +63,7 @@
         <zxing.core.version>3.2.1</zxing.core.version>
         <zxing.javase.version>3.0.0</zxing.javase.version>
         <spring.security.version>2.1.3.RELEASE</spring.security.version>
+        <spring.cloud.version>Hoxton.RELEASE</spring.cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -256,6 +258,7 @@
                 <artifactId>javase</artifactId>
                 <version>${zxing.javase.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -1,0 +1,15 @@
+server:
+  port: 8097
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/mimea-demo?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
+
+# log config
+logging:
+  level:
+    com.meamei.baseDao.dao: debug
+    com.meamei.business.dao: debug

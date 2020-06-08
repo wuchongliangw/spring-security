@@ -11,17 +11,17 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @author mm013
- * @create 2020-04-15 16:01:48
+ * @create 2020-06-08 10:39:32
  * @description:
  */
 @MapperScan({"com.meamei.baseDao.dao"})
 @ComponentScan({"com.meamei.baseConfig.config", "com.meamei.utils"})
 @ComponentScan(value = {"com.meamei.baseService.service"}, lazyInit = true)
 @SpringBootApplication
-public class Application {
+public class Oauth2AppApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Oauth2AppApplication.class, args);
     }
 
     /**
