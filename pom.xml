@@ -45,7 +45,7 @@
         <commons-io.version>2.4</commons-io.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-httpclient.version>4.5.9</commons-httpclient.version>
-        <commons-fileupload.version>1.2.2</commons-fileupload.version>
+        <commons-fileupload.version>1.3.3</commons-fileupload.version>
         <!-- pageHelper -->
         <pageHelper.version>1.2.12</pageHelper.version>
         <!-- 汉字转拼音 -->
