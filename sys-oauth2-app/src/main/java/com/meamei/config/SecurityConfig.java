@@ -1,6 +1,7 @@
 package com.meamei.config;
 
 import com.meamei.service.UserDetailServiceImpl;
+import com.meamei.util.SmsCodeAuthenticationProvider;
 import com.meamei.util.SmsCodeAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,15 +27,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private SmsCodeAuthenticationProvider smsCodeAuthenticationProvider;
 
-    @Bean
-    public UserDetailsService userDetailService() {
-        return new UserDetailServiceImpl();
-    }
+    @Autowired
+    private UserDetailServiceImpl userDetailService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,25 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 添加一个判断短信验证码是否正确的过滤器
 
         // http.addFilterBefore();
-        http
-                .authorizeRequests()
-                .antMatchers("/user/login").permitAll()
-                .antMatchers("/user/sms/login").permitAll()
-                .antMatchers("/user/register").permitAll()
-                .antMatchers("/authentication/telephone").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .csrf().disable().apply(smsCodeAuthenticationSecurityConfig);
-        // 禁用缓存
-        http.headers().cacheControl();
-        // 添加JWT filter
-       // http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
+        http.authenticationProvider(smsCodeAuthenticationProvider).userDetailsService(userDetailService);
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService()).passwordEncoder(passwordEncoder());
     }
 
     @Bean
