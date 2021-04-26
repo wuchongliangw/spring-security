@@ -42,7 +42,7 @@
         <commons-pool2.version>2.6.0</commons-pool2.version>
         <commons-lang.version>2.6</commons-lang.version>
         <commons-lang3.version>3.9</commons-lang3.version>
-        <commons-io.version>2.4</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-httpclient.version>4.5.9</commons-httpclient.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
