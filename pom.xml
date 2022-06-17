@@ -53,7 +53,7 @@
         <!-- 中文分词 -->
         <mmseg4j-core.version>1.10.0</mmseg4j-core.version>
         <!-- json -->
-        <fastjson.version>1.2.56</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <org.json.version>20160810</org.json.version>
         <!-- shiro -->
         <shiro.version>1.4.0</shiro.version>
